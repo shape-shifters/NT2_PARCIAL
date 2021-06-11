@@ -1,0 +1,136 @@
+
+<section class="src-componentes-formulario">
+  <div class="jumbotron">
+    <h2>Notas</h2>
+    <hr>
+
+    <vue-form :state="formState" @submit.prevent="enviar()">
+
+      <!-- CAMPO NOMBRE -->
+      <validate tag="div">
+        <label for="nombre">Nombre</label>
+        <input 
+          type="text" 
+          id="nombre" 
+          name="nombre" 
+          class="form-control"
+          autocomplete="off"
+          v-model.trim="formData.nombre"
+          required
+          :minlength="nombreMinLength"
+          :maxlength="nombreMaxLength"
+          no-espacios
+        >
+        <field-messages name="nombre" show="$dirty">
+          <div slot="required" class="alert alert-danger mt-1">Campo obligatorio</div>            
+          <div slot="no-espacios" class="alert alert-danger mt-1">Error: No se permiten espacios intermedios en este campo</div>            
+          <div slot="minlength" class="alert alert-danger mt-1">Error: Este campo requiere como mínimo {{ nombreMinLength }} caracteres</div>            
+          <div v-if="formData.nombre.length == nombreMaxLength" class="alert alert-warning mt-1">Error: Este campo debe tener como máximo {{ nombreMaxLength }} caracteres</div>            
+        </field-messages>
+      </validate>
+      <br>
+
+      <!-- CAMPO APELLIDO -->
+      <validate tag="div">
+        <label for="nombre">Apellido</label>
+        <input 
+          type="text" 
+          id="apellido" 
+          name="apellido" 
+          class="form-control"
+          autocomplete="off"
+          v-model.trim="formData.apellido"
+          required
+          :minlength="apellidoMinLength"
+          :maxlength="apellidoMaxLength"
+          no-espacios
+        >
+        <field-messages name="apellido" show="$dirty">
+          <div slot="required" class="alert alert-danger mt-1">Campo obligatorio</div>            
+          <div slot="no-espacios" class="alert alert-danger mt-1">Error: No se permiten espacios intermedios en este campo</div>            
+          <div slot="minlength" class="alert alert-danger mt-1">Error: Este campo requiere como mínimo {{ apellidoMinLength }} caracteres</div>            
+          <div v-if="formData.apellido.length == apellidoMaxLength" class="alert alert-warning mt-1">Error: Este campo debe tener como máximo {{ apellidoMaxLength }} caracteres</div>            
+        </field-messages>
+      </validate>
+      <br>
+
+      <!-- CAMPO NOTAS -->
+      <validate tag="div">
+        <label for="nota">Notas</label>
+        <input 
+          type="number" 
+          id="nota" 
+          name="nota" 
+          class="form-control"
+          autocomplete="off"
+          v-model.number="formData.nota"
+          required
+          :min="notaMin"
+          :max="notaMax"
+        >
+        <field-messages name="nota" show="$dirty">
+          <div slot="required" class="alert alert-danger mt-1">Campo obligatorio</div>            
+          <div slot="min" class="alert alert-danger mt-1">Error: La nota mínima es de {{ notaMin }} puntos</div>            
+          <div slot="max" class="alert alert-danger mt-1">Error: La nota máxima permitida es de {{ notaMax }} puntos</div>            
+        </field-messages>
+      </validate>
+      <br>
+
+      <button class="btn btn-success my-3" :disabled="formState.$invalid" type="submit">Enviar</button>
+    </vue-form>
+
+    <div v-if="allMyData.length>0" class="table-responsive">
+      <table class="table table-dark">
+        <tr>
+          <th>Alumno</th>
+          <th>Nota</th>
+        </tr>
+        <tr v-for="(allMyData,index) in allMyData" :key="index">
+          <td>{{allMyData.alumno}}</td>
+          <td v-if="allMyData.nota<=3" style="color: red;">{{allMyData.nota}}</td>
+          <td v-else-if="allMyData.nota>=4 && (allMyData.nota<=6)" style="color:yellow">{{allMyData.nota}}</td>
+          <td v-else-if="allMyData.nota>=7 && (allMyData.nota<=10)" style="color:green">{{allMyData.nota}}</td>
+        </tr>
+        <tr v-if="promedioTotal<=3" style="color: red;">
+          <td>Promedio Total</td>
+          <td>{{promedioTotal}}</td>
+        </tr>
+        <tr v-else-if="promedioTotal>=4 && (promedioTotal<=6)" style="color:yellow">
+          <td>Promedio Total</td>
+          <td>{{promedioTotal}}</td>
+        </tr>
+        <tr v-else="promedioTotal>=7 && promedioTotal<=10" style="color:green">
+          <td>Promedio Total</td>
+          <td>{{promedioTotal}}</td>
+        </tr>
+      </table>
+      <h4 class="alert alert-primary">Se encontraron {{allMyData.length}} notas</h4>
+    </div>
+    <h4 v-else class="alert alert-danger">No se encontraron notas para mostrar</h4>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- <div v-if="allMyData.length>0" class="table-responsive">
+      <table class="table table-dark">
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Nota</th>
+        </tr>
+        <tr v-for="(allMyData,index) in allMyData" :key="index">
+          <td v-for="(col,index) in getCols" :key="index">{{ allMyData[col] }}</td>
+        </tr>
+      </table>
+      <h4 class="alert alert-primary">Se encontraron {{allMyData.length}} notas</h4>
+    </div>
+    <h4 v-else class="alert alert-danger">No se encontraron notas para mostrar</h4> -->
+  </div>
+</div>
+</section>
+
